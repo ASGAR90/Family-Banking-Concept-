@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
+
+  --color-ink: #07090c;
+  --color-raised: #0d0f14;
+  --color-sunk: #050608;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-mist: #9aa3b2;
+  --color-fog: #5b6472;
+
+  --color-sprout: #c9f158;
+  --color-gold: #ffc357;
+  --color-rose: #ff9bd2;
+  --color-mint: #8ce8c7;
+  --color-lilac: #c5a0ff;
+  --color-sky: #7cc7ff;
+  --color-coral: #ff8a6b;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: #eef1ef;
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-sprout);
+  color: #0a0c05;
+}
+
+/* ------- film grain + vignette so the dark never feels flat ------- */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 9s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2%, 2%); }
+  40% { transform: translate(2%, -1%); }
+  60% { transform: translate(-1%, -2%); }
+  80% { transform: translate(1%, 1%); }
+}
+
+/* ------------------------------ helpers ------------------------------ */
+.tnum { font-variant-numeric: tabular-nums; }
+
+.spin-slow { animation: spin 90s linear infinite; }
+.spin-slow-rev { animation: spin-rev 90s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin-rev { to { transform: rotate(-360deg); } }
+
+.pulse-dot { animation: pulse-dot 2.4s ease-in-out infinite; }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.72); }
+}
+
+.floaty { animation: floaty 7s ease-in-out infinite; }
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.shimmer {
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.08) 45%, transparent 60%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ------------------------------ scrollbars ------------------------------ */
+.slim-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+.slim-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 99px; }
+.slim-scroll::-webkit-scrollbar-track { background: transparent; }
+.slim-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.12) transparent; }
+
+/* tooth-dashed rings for the orbit */
+.ring-dash {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+.ring-dash-soft {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+}
