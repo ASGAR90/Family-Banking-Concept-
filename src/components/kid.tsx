@@ -355,6 +355,7 @@ export function KidSide({ state, kid }: { state: AppState; kid: Kid }) {
         state={state}
         filterKid={kid.id}
         scope="family"
+        limit={8}
         empty="Finish a task or lesson to start your ledger."
       />
     </Card>

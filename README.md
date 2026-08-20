@@ -1,25 +1,23 @@
 # Sprout — family money, together
 
-One widget for the whole circle.
+A **mobile** family bank with two ledgers that never mix.
 
-Kids earn through chores, lessons and savings goals. Parents watch the family ledger. Friends split life’s little bills. The two pots never mix.
+Kids earn through chores, lessons and savings goals. Parents see every move. Friends split dinners and movie nights on a completely separate circle ledger.
 
-This repo is the interactive concept for **Sprout**: a family banking OS with a dark, cinematic widget UI.
+## Two tabs. Two pots.
 
-## What’s in the demo
+**Family** — Maya’s kids
+- Kid balances, streaks and savings goals
+- Chore approvals (pay or send back)
+- Money-school progress
+- Tap a kid to open their world: tasks, goal ring, lessons
 
-**Family ledger** (kids only)
+**Circle** — Maya’s friends
+- Split a bill, nudge who still owes, settle up
+- Per-friend net (owes you / you owe / even)
+- In / out / due with the least info that still makes sense
 
-- Parent view: kid balances, chore approvals, weekly earnings, learning progress
-- Kid view: open chores, money-school chapters, savings-goal ring
-- Switch persona between Maya (parent), Leo (12) and Zoe (9)
-
-**Circle ledger** (friends only)
-
-- Split a dinner, movie night or road-trip fuel
-- Nudge who still owes, settle shares, see a per-friend net position
-
-Demo household: Maya Chen, Leo, Zoe, plus four friends (Dev, Arjun, Nina, Sofia).
+The family vault and the circle ledger never share a transaction.
 
 ## Run it
 
@@ -28,21 +26,10 @@ npm install
 npm run dev
 ```
 
-Opens on [http://localhost:3000](http://localhost:3000).
+Opens on [http://localhost:3000](http://localhost:3000). On a wide screen you’ll see the phone. On a real phone it goes full-bleed.
 
-No Postgres required. The app uses [PGlite](https://pglite.dev/) (Postgres-in-WASM) and seeds demo data on first load. Data lives in `./data/sprout`.
+Demo household: Maya Chen, Leo (12), Zoe (9), plus Dev, Arjun, Nina and Sofia.
 
 ## Stack
 
-- Next.js 16 · React 19 · TypeScript
-- Tailwind CSS 4 · Framer Motion · Lucide
-- Drizzle ORM + PGlite
-
-## Layout
-
-```
-src/app/          pages + API routes (tasks, goals, lessons, splits)
-src/components/   WidgetApp, parent / kid / circle views, orbit, modals
-src/db/           schema, seed household, PGlite bootstrap
-src/lib/          state builder + money helpers
-```
+Next.js 16 · React 19 · Tailwind 4 · Framer Motion · Drizzle + PGlite

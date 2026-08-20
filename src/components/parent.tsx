@@ -260,27 +260,31 @@ export function Approvals({
   kids,
   onApprove,
   onDecline,
+  bare = false,
 }: {
   tasks: Task[];
   kids: Kid[];
   onApprove: (t: Task) => void;
   onDecline: (t: Task) => void;
+  bare?: boolean;
 }) {
   const pending = tasks.filter((t) => t.status === "pending");
   const kidOf = (id: number) => kids.find((k) => k.id === id)!;
 
   return (
     <div id="approvals">
-      <SectionHead
-        icon={<BadgeCheck className="size-3.5" />}
-        title="Approval queue"
-        tone="#FF8A6B"
-        right={
-          <span className="text-[11px] text-white/35">
-            {pending.length ? `${pending.length} waiting on you` : "nothing to review"}
-          </span>
-        }
-      />
+      {!bare && (
+        <SectionHead
+          icon={<BadgeCheck className="size-3.5" />}
+          title="Approval queue"
+          tone="#FF8A6B"
+          right={
+            <span className="text-[11px] text-white/35">
+              {pending.length ? `${pending.length} waiting on you` : "nothing to review"}
+            </span>
+          }
+        />
+      )}
       <div className="space-y-2">
         <AnimatePresence initial={false} mode="popLayout">
           {pending.length === 0 ? (
@@ -313,7 +317,7 @@ export function Approvals({
                       <span className="font-semibold text-sprout">{money(t.rewardCents, { exact: true })}</span>
                     </p>
                   </div>
-                  <div className="flex gap-1.5">
+                  <div className="flex shrink-0 gap-1.5">
                     <button
                       onClick={() => onDecline(t)}
                       className="grid size-8 place-items-center rounded-lg border border-white/10 text-white/50 transition hover:bg-white/5 hover:text-white"
@@ -323,9 +327,9 @@ export function Approvals({
                     </button>
                     <button
                       onClick={() => onApprove(t)}
-                      className="flex items-center gap-1 rounded-lg bg-sprout px-3 py-1.5 text-xs font-bold text-[#121703] transition hover:brightness-110 active:scale-95"
+                      className="flex items-center gap-1 rounded-lg bg-sprout px-2.5 py-1.5 text-[11px] font-bold text-[#121703] transition hover:brightness-110 active:scale-95"
                     >
-                      <Check className="size-3.5" /> Pay {money(t.rewardCents)}
+                      <Check className="size-3.5" /> Pay
                     </button>
                   </div>
                 </motion.div>
@@ -379,7 +383,7 @@ export function DuesPanel({
         />
       </div>
 
-      <div className="slim-scroll max-h-[560px] space-y-2.5 overflow-y-auto p-5 pt-0 sm:p-6 sm:pt-0">
+      <div className="space-y-2.5 p-5 pt-0 sm:p-6 sm:pt-0">
         {state.splits.map((s) => {
           const paid = s.participants.filter((p) => p.status === "paid").length;
           const total = s.participants.length;
@@ -512,17 +516,19 @@ export function ActivityFeed({
   filterKid,
   scope,
   empty,
+  limit = 20,
 }: {
   state: AppState;
   filterKid?: number;
   /** "family" = chores/lessons/goals, "circle" = split money only */
   scope?: "family" | "circle";
   empty?: string;
+  limit?: number;
 }) {
   const txns = state.txns
     .filter((t) => (filterKid ? t.memberId === filterKid : true))
     .filter((t) => (scope ? txnScope(t.kind) === scope : true))
-    .slice(0, 20);
+    .slice(0, limit);
   const memberOf = (id: number) =>
     [state.me, ...state.kids, ...state.friends].find((m) => m.id === id);
 
@@ -537,7 +543,7 @@ export function ActivityFeed({
   }
 
   return (
-    <div className="slim-scroll max-h-[400px] space-y-0.5 overflow-y-auto">
+    <div className={cx("space-y-0.5", limit > 8 && "slim-scroll max-h-[400px] overflow-y-auto")}>
       <AnimatePresence initial={false}>
         {txns.map((t) => {
           const meta = TXN_META[t.kind] ?? TXN_META.allowance;

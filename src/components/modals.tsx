@@ -39,17 +39,20 @@ function ModalShell({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/70 p-4 backdrop-blur-md"
+          className="absolute inset-0 z-50 flex items-end bg-black/70 backdrop-blur-md"
           onMouseDown={onClose}
         >
           <motion.div
-            initial={{ opacity: 0, y: 34, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            initial={{ opacity: 0, y: 48 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 32 }}
+            transition={{ type: "spring", stiffness: 320, damping: 32 }}
             onMouseDown={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-[#10131a] shadow-2xl"
+            className="relative w-full max-h-[88%] overflow-y-auto rounded-t-[28px] border border-white/10 bg-[#10131a] shadow-2xl slim-scroll"
           >
+            <div className="sticky top-0 z-10 flex justify-center bg-[#10131a] pt-2.5">
+              <span className="h-1 w-10 rounded-full bg-white/22" />
+            </div>
             <div
               className="pointer-events-none absolute -top-20 left-1/2 h-40 w-[120%] -translate-x-1/2 opacity-25 blur-3xl"
               style={{ background: `radial-gradient(ellipse, ${tone}, transparent 70%)` }}
@@ -94,11 +97,13 @@ export function NewTaskModal({
   open,
   onClose,
   kids,
+  preselectKidId,
   onCreate,
 }: {
   open: boolean;
   onClose: () => void;
   kids: AppState["kids"];
+  preselectKidId?: number;
   onCreate: (payload: {
     kidId: number;
     title: string;

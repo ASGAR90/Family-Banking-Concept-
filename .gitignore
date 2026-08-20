@@ -8,4 +8,5 @@ data
 .env*.local
 *.log
 next-env.d.ts
+tsconfig.tsbuildinfo
 .DS_Store
