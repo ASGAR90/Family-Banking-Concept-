@@ -1,5 +1,5 @@
-import WidgetApp from "@/components/WidgetApp";
+import PreviewStudio from "@/components/PreviewStudio";
 
 export default function Page() {
-  return <WidgetApp />;
+  return <PreviewStudio />;
 }

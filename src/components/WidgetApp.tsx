@@ -15,10 +15,18 @@ type SplitT = AppState["splits"][number];
 type Tab = "family" | "circle";
 type Toast = { id: number; msg: string; tone: string; icon: ReactNode };
 
-export default function WidgetApp() {
+export default function WidgetApp({
+  start = "family",
+  embedded = false,
+  instanceId = "app",
+}: {
+  start?: "family" | "kid" | "circle";
+  embedded?: boolean;
+  instanceId?: string;
+}) {
   const [state, setState] = useState<AppState | null>(null);
   const [failed, setFailed] = useState(false);
-  const [tab, setTab] = useState<Tab>("family");
+  const [tab, setTab] = useState<Tab>(start === "circle" ? "circle" : "family");
   const [kidId, setKidId] = useState<number | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [busyTask, setBusyTask] = useState<number | null>(null);
@@ -48,6 +56,11 @@ export default function WidgetApp() {
     const t = setInterval(() => load(true), 45_000);
     return () => clearInterval(t);
   }, [load]);
+
+  useEffect(() => {
+    if (!state || start !== "kid") return;
+    setKidId((id) => id ?? state.kids[0]?.id ?? null);
+  }, [state, start]);
 
   const pushToast = useCallback((msg: string, tone = "#C9F158", icon?: ReactNode) => {
     const id = ++toastId.current;
@@ -207,6 +220,14 @@ export default function WidgetApp() {
   return (
     <PhoneShell
       accent={accent}
+      embedded={embedded}
+      label={
+        start === "circle"
+          ? "Circle · friends"
+          : start === "kid"
+            ? "Kid · Leo"
+            : "Family · Maya"
+      }
       overlay={
         <>
           <div className="pointer-events-none absolute inset-x-0 bottom-[108px] z-[70] flex flex-col items-center gap-2 px-4">
@@ -341,6 +362,7 @@ export default function WidgetApp() {
         <nav className="absolute inset-x-0 bottom-0 z-40 px-3 pb-[18px]">
           <div className="flex items-center gap-1 rounded-full border border-white/12 bg-[#111419]/92 p-1.5 shadow-[0_16px_50px_-12px_rgba(0,0,0,0.9)] backdrop-blur-xl">
             <TabItem
+              layoutId={`${instanceId}-tab`}
               active={isFamily}
               onClick={() => goTab("family")}
               icon={<Home className="size-4" />}
@@ -358,6 +380,7 @@ export default function WidgetApp() {
               {isFamily ? <Plus className="size-5" strokeWidth={2.6} /> : <Split className="size-5" strokeWidth={2.4} />}
             </button>
             <TabItem
+              layoutId={`${instanceId}-tab`}
               active={!isFamily}
               onClick={() => goTab("circle")}
               icon={<Users className="size-4" />}
@@ -381,6 +404,7 @@ function TabItem({
   sub,
   badge,
   tone,
+  layoutId,
 }: {
   active: boolean;
   onClick: () => void;
@@ -389,6 +413,7 @@ function TabItem({
   sub: string;
   badge?: number;
   tone: string;
+  layoutId: string;
 }) {
   return (
     <button
@@ -400,7 +425,7 @@ function TabItem({
     >
       {active && (
         <motion.span
-          layoutId="tab-pill"
+          layoutId={layoutId}
           className="absolute inset-0 rounded-full"
           style={{ background: `${tone}1c`, boxShadow: `inset 0 0 0 1.5px ${tone}4d` }}
           transition={{ type: "spring", stiffness: 400, damping: 32 }}

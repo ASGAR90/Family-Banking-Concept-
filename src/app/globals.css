@@ -29,7 +29,7 @@ body {
   background: #040506;
   color: #eef1ef;
   font-family: var(--font-sans);
-  overflow-x: clip;
+  overflow-x: auto;
   overscroll-behavior: none;
 }
 

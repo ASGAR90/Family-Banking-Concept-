@@ -6,11 +6,46 @@ export function PhoneShell({
   accent,
   children,
   overlay,
+  embedded = false,
+  label,
 }: {
   accent: string;
   children: ReactNode;
   overlay?: ReactNode;
+  embedded?: boolean;
+  label?: string;
 }) {
+  const phone = (
+    <div className="phone">
+      <span className="phone-btn phone-btn-r" />
+      <span className="phone-btn phone-btn-l1" />
+      <span className="phone-btn phone-btn-l2" />
+      <div className="phone-bezel">
+        <div className="phone-screen grain">
+          <div className="island" />
+          <StatusBar />
+          {children}
+          <div className="home-bar" />
+          {overlay}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (embedded) {
+    return (
+      <div className="studio-slot">
+        {label && (
+          <p className="studio-label">
+            <i style={{ background: accent }} />
+            {label}
+          </p>
+        )}
+        {phone}
+      </div>
+    );
+  }
+
   return (
     <div className="app-stage">
       <div
@@ -22,20 +57,7 @@ export function PhoneShell({
           `,
         }}
       />
-      <div className="phone">
-        <span className="phone-btn phone-btn-r" />
-        <span className="phone-btn phone-btn-l1" />
-        <span className="phone-btn phone-btn-l2" />
-        <div className="phone-bezel">
-          <div className="phone-screen grain">
-            <div className="island" />
-            <StatusBar />
-            {children}
-            <div className="home-bar" />
-            {overlay}
-          </div>
-        </div>
-      </div>
+      {phone}
       <p className="phone-caption">
         <em>sprout</em>
         <span>Family vault and friend splits never share a ledger.</span>
