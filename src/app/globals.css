@@ -1,0 +1,292 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
+
+  --color-ink: #07090c;
+  --color-raised: #0d0f14;
+  --color-sunk: #050608;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-mist: #9aa3b2;
+  --color-fog: #5b6472;
+
+  --color-sprout: #c9f158;
+  --color-gold: #ffc357;
+  --color-rose: #ff9bd2;
+  --color-mint: #8ce8c7;
+  --color-lilac: #c5a0ff;
+  --color-sky: #7cc7ff;
+  --color-coral: #ff8a6b;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #040506;
+  color: #eef1ef;
+  font-family: var(--font-sans);
+  overflow-x: auto;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: var(--color-sprout);
+  color: #0a0c05;
+}
+
+/* ------------------------------ phone shell ------------------------------ */
+
+.app-stage {
+  position: relative;
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  padding: 28px 16px 20px;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(201, 241, 88, 0.08), transparent 50%),
+    #040506;
+}
+
+.phone {
+  position: relative;
+  width: min(390px, calc(100vw - 24px));
+  height: min(844px, calc(100dvh - 72px));
+}
+
+.phone-bezel {
+  height: 100%;
+  padding: 10px;
+  border-radius: 54px;
+  background: linear-gradient(160deg, #3a3e48 0%, #14161c 32%, #07080b 70%, #2a2c34 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 50px 80px -24px rgba(0, 0, 0, 0.85);
+}
+
+.phone-screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 44px;
+  background: var(--color-ink);
+}
+
+.island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  z-index: 80;
+  width: 118px;
+  height: 34px;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.status-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 70;
+  display: flex;
+  height: 52px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 26px 6px;
+  color: #fff;
+  pointer-events: none;
+}
+
+.home-bar {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  z-index: 70;
+  width: 128px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+}
+
+.phone-btn {
+  position: absolute;
+  background: #1c1e24;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.phone-btn-r {
+  top: 148px;
+  right: -3px;
+  width: 3px;
+  height: 72px;
+  border-radius: 2px 0 0 2px;
+}
+.phone-btn-l1 {
+  top: 120px;
+  left: -3px;
+  width: 3px;
+  height: 28px;
+  border-radius: 0 2px 2px 0;
+}
+.phone-btn-l2 {
+  top: 158px;
+  left: -3px;
+  width: 3px;
+  height: 52px;
+  border-radius: 0 2px 2px 0;
+}
+
+.phone-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.phone-caption em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 440px) {
+  .app-stage {
+    padding: 0;
+    background: var(--color-ink);
+  }
+  .phone {
+    width: 100vw;
+    height: 100dvh;
+  }
+  .phone-bezel {
+    padding: 0;
+    border-radius: 0;
+    background: var(--color-ink);
+    box-shadow: none;
+  }
+  .phone-screen {
+    border-radius: 0;
+  }
+  .phone-btn,
+  .phone-caption {
+    display: none;
+  }
+}
+
+/* ------- film grain so the dark never feels flat ------- */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------ helpers ------------------------------ */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.spin-slow {
+  animation: spin 90s linear infinite;
+}
+.spin-slow-rev {
+  animation: spin-rev 90s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+}
+
+.floaty {
+  animation: floaty 7s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+.shimmer {
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.08) 45%, transparent 60%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.slim-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.slim-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+.slim-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slim-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+.ring-dash {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+.ring-dash-soft {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+}

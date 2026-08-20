@@ -1,0 +1,9 @@
+{
+  "dialect": "postgresql",
+  "driver": "pglite",
+  "schema": "./src/db/schema.ts",
+  "out": "./drizzle",
+  "dbCredentials": {
+    "url": "./data/sprout"
+  }
+}
